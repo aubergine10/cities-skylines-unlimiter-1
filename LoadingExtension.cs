@@ -25,9 +25,16 @@ namespace EightyOne
                 return;
             }
             Detours.Deploy();
-            SimulationManager.instance.AddAction(() => Object.FindObjectOfType<RenderProperties>().m_edgeFogDistance = 2800f);
-            SimulationManager.instance.AddAction(() => Object.FindObjectOfType<FogEffect>().m_edgeFogDistance = 2800f);
-            SimulationManager.instance.AddAction(() => Object.FindObjectOfType<FogProperties>().m_EdgeFogDistance = 2800f);
+            try
+            {
+                SimulationManager.instance.AddAction(() => Object.FindObjectOfType<RenderProperties>().m_edgeFogDistance = 2800f);
+                SimulationManager.instance.AddAction(() => Object.FindObjectOfType<FogEffect>().m_edgeFogDistance = 2800f);
+                SimulationManager.instance.AddAction(() => Object.FindObjectOfType<FogProperties>().m_EdgeFogDistance = 2800f);
+            }
+            catch
+            {
+                UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage("81 Tiles self-check: Mod conflict", "Another mod has altered edge fog effects; 81 Tiles was unable to reduce the edge fog.", false);
+            }
             if (Util.IsModActive(Mod.ALL_TILES_START_MOD))
             {
                 UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel").SetMessage(
